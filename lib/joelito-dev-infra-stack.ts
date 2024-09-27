@@ -20,6 +20,17 @@ export class JoelitoDevInfraStack extends cdk.Stack {
   ) {
     super(scope, id, props);
 
+    // Get the certificate ARN from context
+    const certificateArn = this.node.tryGetContext('JoelitoDevCertArn');
+
+    // Ensure the certificate ARN is available
+    if (!certificateArn) {
+      throw new Error('Certificate ARN must be provided via context.');
+    }
+
+    // Import the certificate using the ARN passed via context
+    const certificate = Certificate.fromCertificateArn(this, 'JoelitoDevImportedCert', certificateArn);
+
     // Get Route 53 Hosted Zone
     const hostedZone = PublicHostedZone.fromLookup(this, "HostedZone", {
       domainName: props.domainName,
@@ -32,13 +43,6 @@ export class JoelitoDevInfraStack extends cdk.Stack {
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       removalPolicy: RemovalPolicy.DESTROY, // Not recommended for production
       autoDeleteObjects: true, // Not recommended for production
-    });
-
-    // Create an ACM Certificate
-    const certificate = new Certificate(this, 'SiteCertificate', {
-      domainName: props.domainName,
-      validation: CertificateValidation.fromDns(hostedZone),
-      subjectAlternativeNames: [`www.${props.domainName}`],
     });
 
     const oac = new S3OriginAccessControl(this, 'BucketOAC', {

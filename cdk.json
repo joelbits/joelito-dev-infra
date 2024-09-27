@@ -17,6 +17,7 @@
     ]
   },
   "context": {
+    "JoelitoDevCertArn": "arn:aws:acm:us-east-1:215206961455:certificate/0c96f9ac-e3b1-4a85-a0f8-99f498ccd143",
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
     "@aws-cdk/core:target-partitions": [

@@ -7,18 +7,18 @@ import { JoelitoDevInfraStack } from '../lib/joelito-dev-infra-stack';
 const app = new cdk.App();
 
 const envs = {
-  stage: {
+  stageEUN1: {
     account: '215206961455',
-    region: 'eu-west-1',
+    region: 'eu-north-1',
   },
-  /* prod: {
+  stageUSE1: {
     account: '215206961455',
-    region: 'eu-west-1',
-  }, */
+    region: 'us-east-1',
+  },
 };
 
 new JoelitoDevDnsStack(app, 'JoelitoDevDnsStack', {
-  env: envs.stage,
+  env: envs.stageUSE1,
   domainName: 'joelito.dev',
   emailProviderMxRecord: 'mail.your-email-provider.com'
 });
@@ -37,6 +37,6 @@ new JoelitoDevInfraStack(app, 'JoelitoDevInfraStack', {
   // env: { account: '123456789012', region: 'us-east-1' },
 
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-  env: envs.stage,
+  env: envs.stageEUN1,
   domainName: 'joelito.dev',
 });
